@@ -18,6 +18,7 @@
 #include <tusb.h>
 #include "SerialNumber.h"
 #include "../../Version.hpp"
+#include <string.h>
 
 enum
 {
@@ -134,7 +135,9 @@ tud_descriptor_string_cb(uint8_t  index,
     }
 
     static uint16_t buffer[32 + 1];
-    size_t length;
+    size_t length = 0;
+
+    memset(buffer, 0, sizeof buffer);
 
     switch (index)
     {
@@ -150,15 +153,21 @@ tud_descriptor_string_cb(uint8_t  index,
     default:
         const char *string = strings[index];
         const size_t maxLength = sizeof(buffer) / sizeof(buffer[0]) - 1;
-        if (length > maxLength)
-            length = maxLength;
+
+        if (string == NULL)
+        {
+            return NULL;
+        }
+
+        length = strnlen(string, maxLength);
 
         for (size_t i = 0; i < length; i++)
         {
             buffer[1 + i] = string[i];
         }
-      break;
-  }
+
+        break;
+    }
 
     buffer[0] = (TUSB_DESC_STRING << 8);
     buffer[0] |= 2 * (length + 1);
