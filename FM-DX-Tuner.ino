@@ -25,6 +25,7 @@
 #include "src/Controllers/Tuner/SAF7730/SAF7730.hpp"
 #include "src/Controllers/Tuner/TEF668X/TEF668X.hpp"
 #include "src/Controllers/Tuner/SAF775X/SAF775X.hpp"
+#include "src/Controllers/Tuner/SI47XX/SI47XX.hpp"
 #include "src/I2s/I2sDriver.hpp"
 #include "src/Comm.hpp"
 #include "Config.hpp"
