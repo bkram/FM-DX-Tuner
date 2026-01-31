@@ -1,7 +1,7 @@
 FM-DX Tuner
 =======
 
-Multi-plaftorm microcontroller firmware for NXP radio tuners
+Multi-plaftorm microcontroller firmware for NXP and SI Labs radio tuners
 
 Copyright (C) 2023-2024  Konrad Kosmatka
 
@@ -31,6 +31,8 @@ Webserver, but the protocol is going to be changed in the future.
     - XDR-F1HD (extended modification)
 - SAF775X driver (highly experimental):
     - Mini SAF775X Radio (from Aliexpress)
+- SI47XX driver (experimental)
+    - ATS-Mini Radio (from Aliexpress)
 
 # Configuration
 
