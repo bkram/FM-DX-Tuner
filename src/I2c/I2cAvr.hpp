@@ -20,6 +20,9 @@
 
 #include "I2cMaster/I2cMaster.h"
 #include "../../Config.hpp"
+#if defined(TUNER_DRIVER) && TUNER_DRIVER == SI47XX
+#include "../../ConfigSI47XX.hpp"
+#endif
 
 class I2cAvr
 {
@@ -42,7 +45,11 @@ protected:
     const uint8_t address;
 
 private:
+#if defined(TUNER_DRIVER) && TUNER_DRIVER == SI47XX && defined(SI47XX_AVR_PULLUP)
+    TwiMaster bus{SI47XX_AVR_PULLUP};
+#else
     TwiMaster bus{TUNER_AVR_PULLUP};
+#endif
     uint8_t readLength;
 };
 

@@ -11,8 +11,8 @@
 #define SI47XX_BOARD_ATS_MINI 1
 #define SI47XX_BOARD_ATS_20 2
 
-/* Default board */
-#define SI47XX_BOARD SI47XX_BOARD_ATS_MINI
+/* Default board (available: SI47XX_BOARD_ATS_MINI, SI47XX_BOARD_ATS_20) */
+#define SI47XX_BOARD SI47XX_BOARD_ATS_20
 
 /* -----------------------------------------------------------------------
    Board-specific settings
@@ -42,6 +42,7 @@
 /* Power-up options */
 #define SI47XX_XOSCEN 1  /* 0 = external RCLK, 1 = crystal */
 #define SI47XX_OPMODE 0x05 /* 0x05 = analog audio outputs */
+#define SI47XX_AVR_PULLUP false
 #elif SI47XX_BOARD == SI47XX_BOARD_ATS_20
 /* ATS-20 (Arduino Nano) */
 #define SI47XX_I2C_ADDRESS 0xC6
@@ -61,6 +62,9 @@
 /* Power-up options */
 #define SI47XX_XOSCEN 1  /* uses crystal */
 #define SI47XX_OPMODE 0x05 /* 0x05 = analog audio outputs */
+
+/* AVR internal I2C pull-ups (Nano only; use true if no external pull-ups) */
+#define SI47XX_AVR_PULLUP true
 #else
 #error "Unknown SI47XX_BOARD selection"
 #endif
