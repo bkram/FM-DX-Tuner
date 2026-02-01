@@ -5,6 +5,19 @@
    SI47XX configuration (SI4730/31/34/35 family)
    ----------------------------------------------------------------------- */
 
+/* -----------------------------------------------------------------------
+   Board selection
+   ----------------------------------------------------------------------- */
+#define SI47XX_BOARD_ATS_MINI 1
+#define SI47XX_BOARD_ATS_20 2
+
+/* Default board */
+#define SI47XX_BOARD SI47XX_BOARD_ATS_MINI
+
+/* -----------------------------------------------------------------------
+   Board-specific settings
+   ----------------------------------------------------------------------- */
+#if SI47XX_BOARD == SI47XX_BOARD_ATS_MINI
 /* I2C address: use 8-bit address (write address).
    SEN low  -> 0x22 (7-bit 0x11)
    SEN high -> 0xC6 (7-bit 0x63) */
@@ -29,6 +42,28 @@
 /* Power-up options */
 #define SI47XX_XOSCEN 1  /* 0 = external RCLK, 1 = crystal */
 #define SI47XX_OPMODE 0x05 /* 0x05 = analog audio outputs */
+#elif SI47XX_BOARD == SI47XX_BOARD_ATS_20
+/* ATS-20 (Arduino Nano) */
+#define SI47XX_I2C_ADDRESS 0xC6
+
+/* I2C pins (ESP32 only). Use defaults on AVR/Nano. */
+#define SI47XX_I2C_SDA -1
+#define SI47XX_I2C_SCL -1
+
+/* No external power/amp/mute control on ATS-20 board */
+#define SI47XX_RADIO_EN_PIN -1
+#define SI47XX_AMP_EN_PIN -1
+#define SI47XX_MUTE_PIN -1
+
+/* Reset pin from ATS-20 sketch */
+#define SI47XX_RESET_PIN 12
+
+/* Power-up options */
+#define SI47XX_XOSCEN 1  /* uses crystal */
+#define SI47XX_OPMODE 0x05 /* 0x05 = analog audio outputs */
+#else
+#error "Unknown SI47XX_BOARD selection"
+#endif
 
 /* Reference clock (set to 0 to skip configuration) */
 #define SI47XX_REFCLK_FREQ 0

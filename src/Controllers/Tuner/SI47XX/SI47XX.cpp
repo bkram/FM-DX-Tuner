@@ -90,6 +90,10 @@ SI47XX::setup()
     this->i2c->init();
 #endif
 #else
+    Wire.begin();
+#if defined(TUNER_I2C_CLOCK)
+    Wire.setClock(TUNER_I2C_CLOCK);
+#endif
     this->i2c->init();
 #endif
 
