@@ -821,7 +821,7 @@ SI47XX::readTuneStatus()
     bool stc = false;
 
     const uint32_t start = millis();
-    while ((millis() - start) < 300)
+    while ((millis() - start) < SI47XX_STC_TIMEOUT_MS)
     {
         const uint8_t query[] = { cmd, 0x00 };
         if (!this->sendCommand(query, sizeof(query), true))
@@ -839,7 +839,7 @@ SI47XX::readTuneStatus()
             break;
         }
 
-        delay(20);
+        delay(SI47XX_STC_POLL_MS);
     }
 
     if (!stc)

@@ -29,8 +29,10 @@
 #define SI47XX_I2C_CLOCK 800000UL
 #define SI47XX_POST_RESET_DELAY_MS 0
 #define SI47XX_POWERUP_DELAY_MS 500
-#define SI47XX_TUNE_DELAY_MS 20
+#define SI47XX_TUNE_DELAY_MS 0
 #define SI47XX_CTS_TIMEOUT_MS 150
+#define SI47XX_STC_TIMEOUT_MS 250
+#define SI47XX_STC_POLL_MS 10
 
 /* Radio power enable pin (active high). Set to -1 to disable. */
 #define SI47XX_RADIO_EN_PIN 15
@@ -60,8 +62,10 @@
 #define SI47XX_I2C_CLOCK 100000UL
 #define SI47XX_POST_RESET_DELAY_MS 20
 #define SI47XX_POWERUP_DELAY_MS 600
-#define SI47XX_TUNE_DELAY_MS 60
+#define SI47XX_TUNE_DELAY_MS 0
 #define SI47XX_CTS_TIMEOUT_MS 300
+#define SI47XX_STC_TIMEOUT_MS 500
+#define SI47XX_STC_POLL_MS 20
 
 /* No external power/amp/mute control on ATS-20 board */
 #define SI47XX_RADIO_EN_PIN -1
