@@ -12,20 +12,25 @@
 #define SI47XX_BOARD_ATS_20 2
 
 /* Default board (available: SI47XX_BOARD_ATS_MINI, SI47XX_BOARD_ATS_20) */
-#define SI47XX_BOARD SI47XX_BOARD_ATS_20
+#define SI47XX_BOARD SI47XX_BOARD_ATS_MINI
 
 /* -----------------------------------------------------------------------
    Board-specific settings
    ----------------------------------------------------------------------- */
 #if SI47XX_BOARD == SI47XX_BOARD_ATS_MINI
-/* I2C address: use 8-bit address (write address).
-   SEN low  -> 0x22 (7-bit 0x11)
-   SEN high -> 0xC6 (7-bit 0x63) */
+/* I2C address: use 8-bit write address.
+   Possible: 0x22 (7-bit 0x11, SEN low) or 0xC6 (7-bit 0x63, SEN high).
+   7-bit equivalents shown for reference. */
 #define SI47XX_I2C_ADDRESS 0xC6
 
 /* I2C pins (ESP32). Set to -1 to use Wire defaults. */
 #define SI47XX_I2C_SDA 18
 #define SI47XX_I2C_SCL 17
+#define SI47XX_I2C_CLOCK 800000UL
+#define SI47XX_POST_RESET_DELAY_MS 0
+#define SI47XX_POWERUP_DELAY_MS 500
+#define SI47XX_TUNE_DELAY_MS 20
+#define SI47XX_CTS_TIMEOUT_MS 150
 
 /* Radio power enable pin (active high). Set to -1 to disable. */
 #define SI47XX_RADIO_EN_PIN 15
@@ -45,11 +50,18 @@
 #define SI47XX_AVR_PULLUP false
 #elif SI47XX_BOARD == SI47XX_BOARD_ATS_20
 /* ATS-20 (Arduino Nano) */
+/* Possible: 0x22 (7-bit 0x11, SEN low) or 0xC6 (7-bit 0x63, SEN high).
+   7-bit equivalents shown for reference. */
 #define SI47XX_I2C_ADDRESS 0xC6
 
 /* I2C pins (ESP32 only). Use defaults on AVR/Nano. */
 #define SI47XX_I2C_SDA -1
 #define SI47XX_I2C_SCL -1
+#define SI47XX_I2C_CLOCK 100000UL
+#define SI47XX_POST_RESET_DELAY_MS 20
+#define SI47XX_POWERUP_DELAY_MS 600
+#define SI47XX_TUNE_DELAY_MS 60
+#define SI47XX_CTS_TIMEOUT_MS 300
 
 /* No external power/amp/mute control on ATS-20 board */
 #define SI47XX_RADIO_EN_PIN -1
@@ -64,7 +76,7 @@
 #define SI47XX_OPMODE 0x05 /* 0x05 = analog audio outputs */
 
 /* AVR internal I2C pull-ups (Nano only; use true if no external pull-ups) */
-#define SI47XX_AVR_PULLUP true
+#define SI47XX_AVR_PULLUP false
 #else
 #error "Unknown SI47XX_BOARD selection"
 #endif
@@ -87,7 +99,6 @@
 #define SI47XX_DEFAULT_AM_FREQ 1000
 
 /* Driver timing */
-#define SI47XX_CTS_TIMEOUT_MS 250
 #define SI47XX_QUALITY_INTERVAL_MS 60
 #define SI47XX_RDS_INTERVAL_MS 90
 

@@ -78,7 +78,7 @@ SI47XX::setup()
     if (SI47XX_I2C_SDA >= 0 && SI47XX_I2C_SCL >= 0)
     {
         Wire.begin(SI47XX_I2C_SDA, SI47XX_I2C_SCL);
-        Wire.setClock(800000UL);
+        Wire.setClock(SI47XX_I2C_CLOCK);
         gpio_set_drive_capability((gpio_num_t)SI47XX_I2C_SDA, GPIO_DRIVE_CAP_0);
         gpio_set_drive_capability((gpio_num_t)SI47XX_I2C_SCL, GPIO_DRIVE_CAP_0);
     }
@@ -91,9 +91,7 @@ SI47XX::setup()
 #endif
 #else
     Wire.begin();
-#if defined(TUNER_I2C_CLOCK)
-    Wire.setClock(TUNER_I2C_CLOCK);
-#endif
+    Wire.setClock(SI47XX_I2C_CLOCK);
     this->i2c->init();
 #endif
 
@@ -103,6 +101,9 @@ SI47XX::setup()
     delay(5);
     digitalWrite(SI47XX_RESET_PIN, HIGH);
     delay(5);
+#if SI47XX_POST_RESET_DELAY_MS > 0
+    delay(SI47XX_POST_RESET_DELAY_MS);
+#endif
 #endif
 
     this->devicePresent = this->detectI2cAddress();
@@ -125,6 +126,9 @@ SI47XX::start()
     delay(10);
     digitalWrite(SI47XX_RESET_PIN, HIGH);
     delay(10);
+#if SI47XX_POST_RESET_DELAY_MS > 0
+    delay(SI47XX_POST_RESET_DELAY_MS);
+#endif
  #endif
 
     if (this->mode == MODE_NONE)
@@ -324,7 +328,7 @@ SI47XX::setFrequency(uint32_t value,
         }
 
         this->lastTuneMs = millis();
-        delay(40);
+        delay(SI47XX_TUNE_DELAY_MS);
         this->qualityValid = false;
         if (!this->readTuneStatus())
         {
@@ -362,7 +366,7 @@ SI47XX::setFrequency(uint32_t value,
         }
 
         this->lastTuneMs = millis();
-        delay(40);
+        delay(SI47XX_TUNE_DELAY_MS);
         this->qualityValid = false;
         if (!this->readTuneStatus())
         {
@@ -526,7 +530,7 @@ SI47XX::setOutputMode(OutputMode value)
         {
             return false;
         }
-        return this->setProperty(PROP_FM_BLEND_STEREO_THRESHOLD, 0x0000);
+        return this->setProperty(PROP_FM_BLEND_STEREO_THRESHOLD, 0x007F);
     }
 
     if (value == OUTPUT_MODE_STEREO)
@@ -636,7 +640,7 @@ SI47XX::powerUp(Mode value)
 
     if (SI47XX_XOSCEN)
     {
-        delay(500);
+        delay(SI47XX_POWERUP_DELAY_MS);
     }
 
     if (SI47XX_XOSCEN == 0 && SI47XX_REFCLK_FREQ != 0)
@@ -664,40 +668,35 @@ SI47XX::powerDown()
 bool
 SI47XX::detectI2cAddress()
 {
-    uint8_t preferred = 0x63;
+    uint8_t address7 = 0x63;
 #if defined(SI47XX_I2C_ADDRESS)
     if (SI47XX_I2C_ADDRESS == 0x22)
     {
-        preferred = 0x11;
+        address7 = 0x11;
     }
     else if (SI47XX_I2C_ADDRESS == 0xC6)
     {
-        preferred = 0x63;
+        address7 = 0x63;
     }
 #endif
 
-    const uint8_t candidates[2] = { preferred, (uint8_t)(preferred == 0x63 ? 0x11 : 0x63) };
-
-    for (uint8_t i = 0; i < 2; i++)
+    Wire.beginTransmission(address7);
+    if (Wire.endTransmission() != 0)
     {
-        Wire.beginTransmission(candidates[i]);
-        if (Wire.endTransmission() == 0)
-        {
-            if (candidates[i] == 0x63)
-            {
-                this->i2c = &this->i2cHigh;
-                this->i2cAddr7 = 0x63;
-            }
-            else
-            {
-                this->i2c = &this->i2cLow;
-                this->i2cAddr7 = 0x11;
-            }
-            return true;
-        }
+        return false;
     }
 
-    return false;
+    if (address7 == 0x63)
+    {
+        this->i2c = &this->i2cHigh;
+        this->i2cAddr7 = 0x63;
+    }
+    else
+    {
+        this->i2c = &this->i2cLow;
+        this->i2cAddr7 = 0x11;
+    }
+    return true;
 }
 bool
 SI47XX::sendCommand(const uint8_t *data, size_t len, bool expectResponse)
