@@ -3,6 +3,13 @@
 
 /* -----------------------------------------------------------------------
    SI47XX configuration (SI4730/31/34/35 family)
+   Copyright (c) 2026 Mark de Bruijn
+
+   This code is partially based on or influenced by the following documents/code:
+   - Skyworks AN332 (SI47xx Programming Guide)
+   - Si4730/31/34/35-D60 datasheet
+   - https://github.com/pu2clr/SI4735
+   - https://github.com/esp32-si4732/ats-mini
    ----------------------------------------------------------------------- */
 
 /* -----------------------------------------------------------------------
@@ -23,6 +30,14 @@
    7-bit equivalents shown for reference. */
 #define SI47XX_I2C_ADDRESS 0xC6
 
+/* Defaults (ATS-Mini):
+   - I2C address: 0xC6 (7-bit 0x63)
+   - I2C pins: SDA=18, SCL=17
+   - I2C clock: 800 kHz
+   - Reset: GPIO16
+   - Power-up delay: 500 ms
+   - CTS timeout: 150 ms
+   - STC timeout/poll: 250 ms / 10 ms */
 /* I2C pins (ESP32). Set to -1 to use Wire defaults. */
 #define SI47XX_I2C_SDA 18
 #define SI47XX_I2C_SCL 17
@@ -56,6 +71,15 @@
    7-bit equivalents shown for reference. */
 #define SI47XX_I2C_ADDRESS 0xC6
 
+/* Defaults (ATS-20):
+   - I2C address: 0xC6 (7-bit 0x63)
+   - I2C pins: default Nano SDA/SCL (A4/A5)
+   - I2C clock: 100 kHz
+   - Reset: D12
+   - Post-reset delay: 20 ms
+   - Power-up delay: 600 ms
+   - CTS timeout: 300 ms
+   - STC timeout/poll: 500 ms / 20 ms */
 /* I2C pins (ESP32 only). Use defaults on AVR/Nano. */
 #define SI47XX_I2C_SDA -1
 #define SI47XX_I2C_SCL -1
