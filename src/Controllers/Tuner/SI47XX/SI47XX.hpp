@@ -1,7 +1,7 @@
 /*  SPDX-License-Identifier: GPL-3.0-or-later
  *
- *  FM-DX Tuner
- *  Copyright (C) 2026
+ *  FM-DX Tuner SI47XX Driver
+ *  Copyright (c) 2026 Mark de Bruijn
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@ public:
     int16_t getQualityBandwidth(QualityMode mode) override;
     bool getQualityStereo(QualityMode mode) override;
 
-    const char* getName() override;
+    const char *getName() override;
 
 private:
     bool detectI2cAddress();

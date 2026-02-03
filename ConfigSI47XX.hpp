@@ -1,24 +1,37 @@
+/*  SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ *  FM-DX Tuner SI47XX Driver
+ *  Copyright (c) 2026 Mark de Bruijn
+ *
+ *  This program is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU General Public License
+ *  as published by the Free Software Foundation; either version 3
+ *  of the License, or (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ */
+
 #ifndef FMDX_TUNER_CONFIG_SI47XX_H
 #define FMDX_TUNER_CONFIG_SI47XX_H
 
 /* -----------------------------------------------------------------------
    SI47XX configuration (SI4730/31/34/35 family)
-   Copyright (c) 2026 Mark de Bruijn
-
    This code is partially based on or influenced by the following documents/code:
    - Skyworks AN332 (SI47xx Programming Guide)
    - Si4730/31/34/35-D60 datasheet
    - https://github.com/pu2clr/SI4735
    - https://github.com/esp32-si4732/ats-mini
-   ----------------------------------------------------------------------- */
 
-/* -----------------------------------------------------------------------
    Board selection
    ----------------------------------------------------------------------- */
 #define SI47XX_BOARD_ATS_MINI 1
 #define SI47XX_BOARD_ATS_20 2
 
 /* Default board (available: SI47XX_BOARD_ATS_MINI, SI47XX_BOARD_ATS_20) */
+/* ATS-20 support is present but not yet confirmed working */
 #define SI47XX_BOARD SI47XX_BOARD_ATS_MINI
 
 /* -----------------------------------------------------------------------
@@ -62,7 +75,7 @@
 #define SI47XX_RESET_PIN 16
 
 /* Power-up options */
-#define SI47XX_XOSCEN 1  /* 0 = external RCLK, 1 = crystal */
+#define SI47XX_XOSCEN 1    /* 0 = external RCLK, 1 = crystal */
 #define SI47XX_OPMODE 0x05 /* 0x05 = analog audio outputs */
 #define SI47XX_AVR_PULLUP false
 #elif SI47XX_BOARD == SI47XX_BOARD_ATS_20
@@ -100,7 +113,7 @@
 #define SI47XX_RESET_PIN 12
 
 /* Power-up options */
-#define SI47XX_XOSCEN 1  /* uses crystal */
+#define SI47XX_XOSCEN 1    /* uses crystal */
 #define SI47XX_OPMODE 0x05 /* 0x05 = analog audio outputs */
 
 /* AVR internal I2C pull-ups (Nano only; use true if no external pull-ups) */
